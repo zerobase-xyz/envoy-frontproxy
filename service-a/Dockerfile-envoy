@@ -1,0 +1,11 @@
+FROM envoyproxy/envoy-alpine:latest
+
+ENV SERVICE_NAME 1
+
+RUN apk update && apk add python3 bash
+
+COPY ./service-envoy.yaml /etc/service-envoy.yaml
+
+EXPOSE 80
+
+ENTRYPOINT envoy -c /etc/service-envoy.yaml --service-cluster service${SERVICE_NAME}

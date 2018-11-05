@@ -1,0 +1,49 @@
+version: '2'
+services:
+
+  front-envoy:
+    build:
+      context: .
+      dockerfile: Dockerfile-frontenvoy
+    networks:
+      - envoymesh
+    ports:
+      - "8000:80"
+      - "8001:8001"
+
+  service1:
+    build:
+      context: ./service-a
+      dockerfile: Dockerfile-envoy
+    networks:
+      envoymesh:
+        aliases:
+          - service1
+  app-a:
+    build:
+      context: ./service-a
+      dockerfile: Dockerfile-app
+    networks:
+      envoymesh:
+        aliases:
+          - service1
+
+  service2:
+    build:
+      context: ./service-b
+      dockerfile: Dockerfile-envoy
+    networks:
+      envoymesh:
+        aliases:
+          - service2
+  app-b:
+    build:
+      context: ./service-b
+      dockerfile: Dockerfile-app
+    networks:
+      envoymesh:
+        aliases:
+          - service2
+
+networks:
+  envoymesh: {}
