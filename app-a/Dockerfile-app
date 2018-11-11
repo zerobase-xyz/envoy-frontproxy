@@ -1,6 +1,7 @@
 FROM python:3.6-alpine3.8
 
-ENV SERVICE_NAME 1
+ENV SERVICE_NAME a
+ENV REDIS_HOST 127.0.0.1
 
 RUN apk --update add \
         gcc \

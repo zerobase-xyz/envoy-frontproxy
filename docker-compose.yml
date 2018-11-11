@@ -4,46 +4,72 @@ services:
   front-envoy:
     build:
       context: .
-      dockerfile: Dockerfile-frontenvoy
+      dockerfile: Dockerfile
     networks:
       - envoymesh
     ports:
       - "8000:80"
       - "8001:8001"
 
-  service1:
+  app-a.envoy:
     build:
-      context: ./service-a
+      context: ./app-a
       dockerfile: Dockerfile-envoy
     networks:
       envoymesh:
         aliases:
-          - service1
+          - app-a
+    environment:
+      - SERVICE_NAME=a
+
   app-a:
     build:
-      context: ./service-a
+      context: ./app-a
       dockerfile: Dockerfile-app
     networks:
       envoymesh:
         aliases:
-          - service1
+          - app-a
+    environment:
+      - SERVICE_NAME=a
+      - REDIS_HOST=app-a-redis
 
-  service2:
+  app-a-redis:
+    image: redis:latest
+    networks:
+      envoymesh:
+        aliases:
+          - app-a
+
+  app-b.envoy:
     build:
-      context: ./service-b
+      context: ./app-b
       dockerfile: Dockerfile-envoy
     networks:
       envoymesh:
         aliases:
-          - service2
+          - app-b
+    environment:
+      - SERVICE_NAME=b
+
   app-b:
     build:
-      context: ./service-b
+      context: ./app-b
       dockerfile: Dockerfile-app
     networks:
       envoymesh:
         aliases:
-          - service2
+          - app-b
+    environment:
+      - SERVICE_NAME=b
+      - REDIS_HOST=app-b-redis
+
+  app-b-redis:
+    image: redis:latest
+    networks:
+      envoymesh:
+        aliases:
+          - app-b
 
 networks:
   envoymesh: {}

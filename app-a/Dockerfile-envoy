@@ -1,6 +1,6 @@
 FROM envoyproxy/envoy-alpine:latest
 
-ENV SERVICE_NAME 2
+ENV SERVICE_NAME a
 
 RUN apk update && apk add python3 bash
 

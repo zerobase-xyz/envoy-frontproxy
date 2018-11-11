@@ -18,22 +18,26 @@ static_resources:
               - "*"
               routes:
               - match:
-                  prefix: "/service/1"
+                  prefix: "/app/a"
                 route:
-                  cluster: service1
+                  cluster: app-a
                   retry_policy:
                     retry_host_predicate:
                     - name: envoy.retry_host_predicates.previous_hosts
                     host_selection_retry_max_attempts: 3
               - match:
-                  prefix: "/service/2"
+                  prefix: "/app/b"
                 route:
-                  cluster: service2
+                  cluster: app-b
+                  retry_policy:
+                    retry_host_predicate:
+                    - name: envoy.retry_host_predicates.previous_hosts
+                    host_selection_retry_max_attempts: 3
           http_filters:
           - name: envoy.router
             config: {}
   clusters:
-  - name: service1
+  - name: app-a
     connect_timeout: 0.5s
     type: strict_dns
     lb_policy: round_robin
@@ -42,7 +46,7 @@ static_resources:
     - socket_address:
         address: app-a.envoy
         port_value: 80
-  - name: service2
+  - name: app-b
     connect_timeout: 0.5s
     type: strict_dns
     lb_policy: round_robin

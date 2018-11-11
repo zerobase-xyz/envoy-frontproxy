@@ -18,7 +18,7 @@ static_resources:
               - "*"
               routes:
               - match:
-                  prefix: "/service"
+                  prefix: "/app"
                 route:
                   cluster: local_service
           http_filters:
@@ -34,7 +34,7 @@ static_resources:
         address: app-b
         port_value: 5000
 admin:
-  access_log_path: "/dev/stdout"
+  access_log_path: "/dev/null"
   address:
     socket_address:
       address: 0.0.0.0

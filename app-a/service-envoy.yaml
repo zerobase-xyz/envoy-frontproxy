@@ -18,7 +18,7 @@ static_resources:
               - "*"
               routes:
               - match:
-                  prefix: "/service"
+                  prefix: "/app"
                 route:
                   cluster: local_service
           http_filters:
@@ -31,7 +31,7 @@ static_resources:
     lb_policy: round_robin
     hosts:
     - socket_address:
-        address: 127.0.0.1
+        address: app-a
         port_value: 5000
 admin:
   access_log_path: "/dev/null"
